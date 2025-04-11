@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Chi Tiết Sản Phẩm{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ sanpham.hinh_anh.url }}" class="img-fluid" alt="{{ sanpham.ten_sp }}">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ sanpham.ten_sp }}</h2>
+        <p>{{ sanpham.mo_ta }}</p>
+        <h4>Giá: {{ sanpham.gia }} VNĐ</h4>
+        <a href="#" class="btn btn-success">Mua ngay</a>
+    </div>
+</div>
+{% endblock %}

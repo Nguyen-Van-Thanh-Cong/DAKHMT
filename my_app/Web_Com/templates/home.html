@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Trang Chủ{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Chào mừng bạn đến với cửa hàng Cốm Mễ Trì</h1>
+<p class="text-center">Chúng tôi cung cấp những sản phẩm cốm tươi ngon nhất.</p>
+<div class="text-center">
+    <a href="{% url 'Web_Com:sanpham' %}" class="btn btn-success">Xem Sản Phẩm</a>
+</div>
+{% endblock %}

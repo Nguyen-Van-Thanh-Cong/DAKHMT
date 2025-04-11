@@ -5,7 +5,7 @@ from django.db import models
 class SanPham(models.Model):
     id_sp = models.AutoField(primary_key=True)
     ten_sp = models.CharField(max_length=100, null=False)
-    gia = models.IntegerField(null=False)
+    gia = models.IntegerField(unique=True,null=False)
     mo_ta = models.TextField(null=False)
     hinh_anh = models.ImageField(upload_to='static/images/', null=True, blank=True)
 
@@ -26,7 +26,7 @@ class KhachHang(models.Model):
 # Bảng tài khoản
 class TaiKhoan(models.Model):
     id_tk = models.AutoField(primary_key=True)
-    khach_hang = models.OneToOneField(KhachHang, on_delete=models.CASCADE)
+    id_kh = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
     ten_dn = models.CharField(max_length=50, unique=True, null=False)
     mk = models.CharField(max_length=128, null=False)  
 
@@ -44,31 +44,43 @@ class DonHang(models.Model):
     ]
 
     id_dh = models.AutoField(primary_key=True)
-    khach_hang = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
-    tong_sp = models.IntegerField(default=0)
+    id_kh = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
+    tong_sp = models.IntegerField(default=0,)
     tong_tien = models.IntegerField(default=0)
     ngay_dat = models.DateTimeField(auto_now_add=True)
     trang_thai = models.CharField(max_length=20, choices=TRANG_THAI_CHOICES, default='DA_DAT')
 
     def __str__(self):
-        return f"Đơn hàng {self.id_dh} - {self.khach_hang.ten_kh}"
-
+        return f"Đơn hàng {self.id_dh} - {self.id_kh.ten_kh}"
+    
+    def cap_nhat_tong(self):
+        chi_tiet_don_hang = self.chitietdonhang_set.all()
+        tong_sp = sum(item.so_luong for item in chi_tiet_don_hang)
+        tong_tien = sum(item.so_luong * item.gia for item in chi_tiet_don_hang)
+       
+        DonHang.objects.filter(id_dh=self.id_dh).update(tong_sp=tong_sp, tong_tien=tong_tien)
+    
 # Bảng chi tiết đơn hàng
 class ChiTietDonHang(models.Model):
-    don_hang = models.ForeignKey(DonHang, on_delete=models.CASCADE)
-    san_pham = models.ForeignKey(SanPham, on_delete=models.CASCADE)
+    id_dh = models.ForeignKey(DonHang, on_delete=models.CASCADE)
+    id_kh = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
+    id_sp = models.ForeignKey(SanPham, on_delete=models.CASCADE)
     so_luong = models.IntegerField(null=False)
-    gia = models.IntegerField(null=False)
+    gia = models.IntegerField(null=False, editable=False)
+    
+    def save(self, *args, **kwargs):
+        self.gia = self.id_sp.gia
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.san_pham.ten_sp} - SL: {self.so_luong}"
+        return f"{self.id_sp.ten_sp} - SL: {self.so_luong}"
 
 # Bảng liên hệ
 class LienHe(models.Model):
-    khach_hang = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
+    id_kh = models.ForeignKey(KhachHang, on_delete=models.CASCADE)
     nd_lh = models.TextField(null=False)
     ngay_lh = models.DateTimeField(auto_now_add=True)
     phan_hoi = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"Liên hệ từ {self.khach_hang.ten_kh} ngày {self.ngay_lh}"
+        return f"Liên hệ từ {self.id_kh.ten_kh} ngày {self.ngay_lh}"

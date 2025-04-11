@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Sản Phẩm{% endblock %}
+
+{% block content %}
+<h2 class="text-center">Danh sách sản phẩm</h2>
+<div class="row">
+    {% for sp in sanphams %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ sp.hinh_anh.url }}" class="card-img-top" alt="{{ sp.ten_sp }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ sp.ten_sp }}</h5>
+                <p class="card-text">Giá: {{ sp.gia }} VNĐ</p>
+                <a href="{% url 'Web_Com:chitiet' sp.id_sp %}" class="btn btn-primary">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
