@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Lịch sử đơn hàng{% endblock %}
+
+{% block content %}
+<h2 class="text-center my-4">📜 Lịch sử đơn hàng</h2>
+
+{% if don_hangs %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Tổng sản phẩm</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dh in don_hangs %}
+        <tr>
+            <td>#{{ dh.id_dh }}</td>
+            <td>{{ dh.ngay_dat|date:"d/m/Y H:i" }}</td>
+            <td>{{ dh.tong_sp }}</td>
+            <td>{{ dh.tong_tien }} VNĐ</td>
+            <td>{{ dh.trang_thai }}</td>
+            <td>
+                <a href="{% url 'Web_Com:chi_tiet_don' dh.id_dh %}" class="btn btn-info btn-sm">Xem</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-center">Bạn chưa có đơn hàng nào.</p>
+{% endif %}
+{% endblock %}

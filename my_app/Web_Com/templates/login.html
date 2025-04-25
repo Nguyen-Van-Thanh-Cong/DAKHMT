@@ -4,7 +4,14 @@
   <h2>Đăng nhập</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="mb-3">
+      <label for="ten_dn" class="form-label">Tên đăng nhập</label>
+      <input type="text" name="ten_dn" id="ten_dn" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="mk" class="form-label">Mật khẩu</label>
+      <input type="password" name="mk" id="mk" class="form-control" required>
+    </div>
     <button type="submit">Đăng nhập</button>
   </form>
   <p>Bạn chưa có tài khoản? <a href="{% url 'Web_Com:dang_ky' %}">Đăng ký ngay</a></p>

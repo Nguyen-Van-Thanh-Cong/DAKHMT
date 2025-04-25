@@ -10,7 +10,18 @@
         <h2>{{ sanpham.ten_sp }}</h2>
         <p>{{ sanpham.mo_ta }}</p>
         <h4>Giá: {{ sanpham.gia }} VNĐ</h4>
-        <a href="#" class="btn btn-success">Mua ngay</a>
     </div>
+    <div class="d-flex gap-3 mt-4">
+        <form method="post" action="{% url 'Web_Com:them_vao_gio' sanpham.id_sp %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-success">
+                🛒 Thêm vào giỏ
+            </button>
+        </form>
+        <a href="{% url 'Web_Com:them_vao_gio' sanpham.id_sp %}?redirect=giohang" class="btn btn-success">
+            🛍 Mua ngay
+        </a>
+    </div>
+    
 </div>
 {% endblock %}

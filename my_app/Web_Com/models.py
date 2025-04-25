@@ -7,7 +7,7 @@ class SanPham(models.Model):
     ten_sp = models.CharField(max_length=100, null=False)
     gia = models.IntegerField(unique=True,null=False)
     mo_ta = models.TextField(null=False)
-    hinh_anh = models.ImageField(upload_to='static/images/', null=True, blank=True)
+    hinh_anh = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
         return self.ten_sp

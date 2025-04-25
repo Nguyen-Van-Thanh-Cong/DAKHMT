@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Giỏ hàng{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="text-success mb-4 text-center">🛒 Giỏ hàng của bạn</h3>
+
+    {% if chi_tiet %}
+    <table class="table table-bordered align-middle text-center bg-white">
+        <thead class="table-success">
+            <tr>
+                <th>Ảnh</th>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in chi_tiet %}
+            <tr>
+                <td><img src="{{ item.id_sp.hinh_anh.url }}" width="80" height="80"></td>
+                <td>{{ item.id_sp.ten_sp }}</td>
+
+                <td>
+                    <form action="{% url 'Web_Com:cap_nhat_so_luong' item.id_sp.id_sp %}" method="post" class="d-flex justify-content-center">
+                        {% csrf_token %}
+                        <input type="number" name="so_luong" value="{{ item.so_luong }}" min="1" class="form-control form-control-sm w-50 me-2">
+                        <button class="btn btn-sm btn-outline-success">Cập nhật</button>
+                    </form>
+                </td>
+
+                <td>{{ item.gia }} VNĐ</td>
+                <td><strong>{{ item.tong_tien }} VNĐ</strong></td>
+
+                <td>
+                    <a href="{% url 'Web_Com:xoa_san_pham_gio' item.id_sp.id_sp %}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')">
+                       ❌ Xoá
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end"><strong>Tổng cộng:</strong></td>
+                <td colspan="2"><strong class="text-success">{{ don_hang.tong_tien }} VNĐ</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="text-end">
+        <a href="{% url 'Web_Com:dathang' %}" class="btn btn-success">🚚 Tiến hành đặt hàng</a>
+    </div>
+
+    {% else %}
+    <p class="text-center text-muted">🛍 Giỏ hàng của bạn đang trống.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Đặt hàng thành công{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+    <h2>🎉 Cảm ơn bạn đã đặt hàng!</h2>
+    <p>Chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất có thể.</p>
+    <a href="{% url 'Web_Com:home' %}" class="btn btn-primary mt-3">Về trang chủ</a>
+</div>
+{% endblock %}
